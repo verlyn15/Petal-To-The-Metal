@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 
+// PDO receives credentials as arguments; exclude them from logged stack traces.
+ini_set('zend.exception_ignore_args', '1');
+
 require_once __DIR__ . '/database.php';
 
 function app_config(): array

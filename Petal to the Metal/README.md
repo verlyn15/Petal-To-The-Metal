@@ -14,6 +14,7 @@ Follow [the XAMPP setup guide](docs/setup.md). From this project folder, verify 
 
 ```powershell
 & 'C:\xampp\php\php.exe' scripts/check-environment.php
+& 'C:\xampp\php\php.exe' tests/bootstrap-error-logging.php
 ```
 
 Shop name, currency, timezone, and fulfillment fees are editable in config/app.php. Database credentials belong in config/local.php, which is excluded from Git.
