@@ -1,6 +1,6 @@
 # Local setup with XAMPP
 
-Run all commands from the project directory containing `app/`, `database/`, and `public/`. While this feature is in its isolated checkout, that directory is `.worktrees/flower-shop/Petal to the Metal/` beneath the original project folder.
+Run all commands from the `Petal to the Metal` project directory containing `app/`, `database/`, and `public/`. The verified application has been merged into `master` and is available directly in the original project folder.
 
 ## Verified environment
 
