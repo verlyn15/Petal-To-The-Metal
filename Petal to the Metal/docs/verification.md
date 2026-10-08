@@ -1,5 +1,27 @@
 # Verification record
 
+## Customer UX improvements — 2026-10-08
+
+The user selected a named account menu with My orders and Log out inside. The updated header uses a native disclosure with keyboard dismissal and a separate CSRF-protected logout action. Forms add linked errors, focus recovery, password visibility, submitting feedback, and checkout progress. Bag quantity changes save through the existing endpoint, serialize requests, refresh server-rendered totals, and wait before checkout. Failed drafts remain available for retry or removal; logout remains available. Selected arrangements survive login/registration and validation failures.
+
+UI/UX Pro Max's written guidelines informed readable type, touch targets, focus, contrast, and mobile layouts. Its installed search helpers were missing; no CLI design-system search is claimed. The original cream, blush, sage, Caslon, and DM Sans direction is retained.
+
+| Check | Actual result |
+| --- | --- |
+| PHP syntax | 73 files pass in app/public/templates/config/tests |
+| Unit and integration tests | 26 passed, 0 failed |
+| Focused Chromium UX checks | 14 passed |
+| Complete Chromium workflow QA | 20 checks passed |
+| Responsive sweep | 64 page/viewport combinations at 375, 768, 1024, 1440 pixels |
+| QA cleanup | Exact temporary customers/orders removed; stock restored |
+| Visual review | Desktop and phone account menus, payment and admin screenshots |
+
+Commands: `C:/xampp/php/php.exe tests/run.php`, PHP `-l` over the listed directories, `node tests/e2e/ux-qa.cjs`, and `node tests/e2e/browser-qa.cjs`. Browser tests use `PETAL_QA_URL` to target only localhost. Screenshots are local ignored artifacts under `storage/logs/screenshots`.
+
+Observed failures before fixes included the absent account menu, missing quantity autosave, rapid multi-row edits lost through page navigation, and removal trapped after failed saves. Regression coverage now checks those interactions, immediate checkout, failed-save retry/removal/logout, no-JavaScript logout, safe product returns, linked registration/checkout errors, and password visibility. Code review identified cart race/recovery issues and nonfield error links; they were corrected and covered where appropriate.
+
+Limits remain Chromium/MariaDB and representative visual review, rather than a full accessibility audit or physical-device/Safari/Firefox testing.
+
 Verified on 2026-10-08 (Asia/Singapore) in the isolated `feature/flower-shop-setup` checkout.
 
 ## Environment and results

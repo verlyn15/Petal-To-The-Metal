@@ -14,6 +14,16 @@ function url(string $path = '/'): string
     return rtrim(app_config()['base_path'], '/') . '/' . ltrim($path, '/');
 }
 
+function safe_return_route($candidate): string
+{
+    $routes = ['/cart.php', '/checkout.php', '/orders.php', '/shop.php'];
+    if (is_string($candidate) && (in_array($candidate, $routes, true)
+        || preg_match('/\A\/product\.php\?id=[1-9][0-9]{0,9}\z/', $candidate))) {
+        return $candidate;
+    }
+    return '/shop.php';
+}
+
 function redirect(string $path): void
 {
     header('Location: ' . url($path), true, 303);

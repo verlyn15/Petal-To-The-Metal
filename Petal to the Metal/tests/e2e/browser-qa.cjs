@@ -41,7 +41,7 @@ async function place(page, method) {
   await page.locator('form[action$="/actions/cart.php"] button[type=submit]').click();
   await page.goto(base+'/checkout.php');
   if(!checkoutLayoutsChecked) {
-    for(const width of [375,768,1440]) {
+    for(const width of [375,768,1024,1440]) {
       await page.setViewportSize({width,height:1000});
       for(const route of ['/cart.php','/checkout.php']) {
         await page.goto(base+route);
@@ -61,12 +61,12 @@ async function place(page, method) {
   await page.locator('form[action$="/actions/checkout.php"] button[type=submit]').click();
   await page.waitForURL('**/payment.php');
   if(!checkoutLayoutsChecked) {
-    for(const width of [375,768,1440]) {
+    for(const width of [375,768,1024,1440]) {
       await page.setViewportSize({width,height:1000});
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'payment at '+width+'px');
       if(width===375) await page.screenshot({path:path.join(output,'payment-mobile.png'),fullPage:true});
     }
-    checkoutLayoutsChecked=true;good('populated bag, checkout, and payment at three viewport widths');
+    checkoutLayoutsChecked=true;good('populated bag, checkout, and payment at four viewport widths');
   }
   assert.match(await page.locator('body').innerText(), /No money is charged/);
   assert.equal(await page.locator('input[type=password]').count(),0);
@@ -166,7 +166,7 @@ async function run() {
   good('mobile admin products layout');
   let responsivePages=0;
   async function inspectPages(target,routes) {
-    for(const width of [375,768,1440]) {
+    for(const width of [375,768,1024,1440]) {
       await target.setViewportSize({width,height:1000});
       for(const route of routes) {
         const response=await target.goto(base+route);

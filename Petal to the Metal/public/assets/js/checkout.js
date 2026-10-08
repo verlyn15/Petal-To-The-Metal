@@ -15,3 +15,11 @@ function updateFulfillment() {
 }
 methodInputs.forEach((input) => input.addEventListener('change', updateFulfillment));
 updateFulfillment();
+const giftMessage = document.getElementById('gift_message');
+const characterCount = document.querySelector('[data-character-count]');
+if (giftMessage && characterCount) {
+  characterCount.hidden = false;
+  const updateCount = () => { characterCount.textContent = `${giftMessage.value.length} / ${giftMessage.maxLength}`; };
+  giftMessage.addEventListener('input', updateCount);
+  updateCount();
+}
