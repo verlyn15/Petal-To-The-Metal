@@ -22,6 +22,8 @@ Observed failures before fixes included the absent account menu, missing quantit
 
 Limits remain Chromium/MariaDB and representative visual review, rather than a full accessibility audit or physical-device/Safari/Firefox testing.
 
+Merged into local `master`. PHP tests/lint and both browser suites were rerun successfully against the main project and its `http://127.0.0.1:8000` preview.
+
 Verified on 2026-10-08 (Asia/Singapore) in the isolated `feature/flower-shop-setup` checkout.
 
 ## Environment and results

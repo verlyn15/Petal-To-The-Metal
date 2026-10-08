@@ -5,7 +5,7 @@ const path=require('node:path');
 const fs=require('node:fs');
 const crypto=require('node:crypto');
 const root=path.resolve(__dirname,'../..');
-const base=process.env.PETAL_QA_URL||'http://127.0.0.1:8001';
+const base=process.env.PETAL_QA_URL||'http://127.0.0.1:8000';
 if(!/^http:\/\/127\.0\.0\.1:\d+$/.test(base)) throw Error('Local preview required.');
 const email=`qa-${crypto.randomBytes(8).toString('hex')}-1@example.test`;
 const password=crypto.randomBytes(16).toString('hex');
