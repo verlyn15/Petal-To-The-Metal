@@ -14,7 +14,7 @@ The approved scope includes customer accounts, a flower catalog, a cart, simulat
 
 ## Setup
 
-Follow [the XAMPP setup guide](docs/setup.md). From this project folder, verify the environment with:
+Start with [How to run: requirements, dependencies, and setup](HOW_TO_RUN.md). The [detailed XAMPP setup guide](docs/setup.md) is also available. From this project folder, verify the environment with:
 
 ```powershell
 & 'C:\xampp\php\php.exe' scripts/check-environment.php
