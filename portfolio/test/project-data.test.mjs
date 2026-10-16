@@ -17,6 +17,17 @@ const excludedClaims = [
   'Automated Video Captioning',
   'Balayan',
   'PlantDito',
+  '12+ Products',
+  '4 Teams Led',
+  '98% Success',
+  'Writing & Notes',
+  'Design systems as newsroom workflows',
+  'Latency is a product requirement',
+  'Making dashboards readable',
+  'Timeline',
+  'Led a platform redesign that unified five product surfaces into one design system.',
+  'Shipped a data observability suite for enterprise logistics clients.',
+  'Built a developer portal that cut onboarding time by 35%.',
 ];
 
 test('publishes exactly the five approved projects in recruiter-facing order', () => {
@@ -109,10 +120,14 @@ test('exports the approved contact and site identity details', () => {
 });
 
 test('omits excluded projects, invented metrics, and unsupported history', () => {
-  const serialized = JSON.stringify({ projects, site });
+  const serialized = JSON.stringify({ projects, site, contacts });
 
   for (const claim of excludedClaims) {
-    assert.doesNotMatch(serialized, new RegExp(claim, 'i'));
+    assert.equal(
+      serialized.toLocaleLowerCase().includes(claim.toLocaleLowerCase()),
+      false,
+      `unsupported legacy claim: ${claim}`,
+    );
   }
 
   for (const project of projects) {

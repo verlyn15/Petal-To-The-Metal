@@ -16,16 +16,42 @@ test('escapeHtml encodes double and single quotes and stringifies values', () =>
   assert.equal(escapeHtml(false), 'false');
 });
 
-test('renderAttrs escapes values and omits only nullish attributes', () => {
+test('renderAttrs escapes values and omits nullish attributes', () => {
   assert.equal(
     renderAttrs({
       class: 'project & proof',
       title: `Jayrald's \"work\"`,
       count: 0,
-      active: false,
       absent: null,
       unknown: undefined,
     }),
-    ' class="project &amp; proof" title="Jayrald&#39;s &quot;work&quot;" count="0" active="false"',
+    ' class="project &amp; proof" title="Jayrald&#39;s &quot;work&quot;" count="0"',
   );
+});
+
+test('renderAttrs uses presence semantics for media boolean attributes', () => {
+  assert.equal(
+    renderAttrs({
+      muted: true,
+      loop: false,
+      autoplay: false,
+      controls: true,
+      playsinline: true,
+    }),
+    ' muted controls playsinline',
+  );
+
+  assert.throws(
+    () => renderAttrs({ autoplay: 'false' }),
+    { name: 'TypeError', message: /Boolean attribute/ },
+  );
+});
+
+test('renderAttrs rejects malformed attribute names', () => {
+  for (const name of ['bad name', 'title="unsafe"', '<script', 'data-value/onload']) {
+    assert.throws(
+      () => renderAttrs({ [name]: 'value' }),
+      { name: 'TypeError', message: /Invalid attribute name/ },
+    );
+  }
 });
