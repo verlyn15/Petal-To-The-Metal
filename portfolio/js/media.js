@@ -98,12 +98,13 @@ export function initProjectMedia(root = document, options = {}) {
   const update = (record) => {
     if (stopped) return;
 
-    const viewportEligible =
-      record.open && record.intersecting && documentVisible();
-    if (!viewportEligible) record.userStarted = false;
+    const viewportEligible = record.intersecting && documentVisible();
+    if (!viewportEligible || !record.open) record.userStarted = false;
+    const reducedMotionPause =
+      Boolean(motionQuery.matches) && !(record.open && record.userStarted);
 
     const action = decideMediaAction({
-      reducedMotion: Boolean(motionQuery.matches) && !record.userStarted,
+      reducedMotion: reducedMotionPause,
       intersecting: viewportEligible,
       documentVisible: documentVisible(),
       failed: record.failed || record.video.dataset.mediaFailed === 'true',
@@ -170,13 +171,12 @@ export function initProjectMedia(root = document, options = {}) {
       update(record);
     };
     const handlePlay = () => {
-      const viewportEligible =
-        record.open && record.intersecting && documentVisible();
+      const viewportEligible = record.intersecting && documentVisible();
 
-      if (motionQuery.matches && viewportEligible) {
+      if (motionQuery.matches && record.open && viewportEligible) {
         record.userStarted = true;
         actionByVideo.set(video, 'play');
-      } else if (!viewportEligible) {
+      } else if (motionQuery.matches || !viewportEligible) {
         actionByVideo.delete(video);
         update(record);
       }

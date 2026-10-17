@@ -103,7 +103,8 @@ export function initReveals(root = document) {
         }
 
         for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
+          const passedAboveViewport = entry.boundingClientRect?.bottom <= 0;
+          if (!entry.isIntersecting && !passedAboveViewport) continue;
           entry.target.classList.add('is-revealed');
           observer.unobserve(entry.target);
         }

@@ -75,8 +75,8 @@
           <h2 id="problem-title">Problem</h2>
         </header>
         <div class="case-prose">
-          <p class="case-lede">Protect seat inventory from conflicting bookings while carrying a user through a multi-step reservation flow.</p>
-          <p>An Angular booking client communicates with a Django backend that applies transactional locking when seats are reserved.</p>
+          <p class="case-lede">Keep seat validation authoritative on the backend while carrying a user through a multi-step reservation flow.</p>
+          <p>An Angular booking client sends reservation requests to a Django API that validates and writes seat state inside transaction.atomic. The SQLite demo backend does not enforce SELECT FOR UPDATE row locks.</p>
         </div>
       </section>
 
@@ -86,7 +86,7 @@
           <h2 id="contribution-title">My contribution</h2>
         </header>
         <div class="case-prose contribution-note">
-          <p class="case-lede">Designed and built the Angular client, Django backend, reservation workflow, and transactionally locked seat selection.</p>
+          <p class="case-lede">Designed and built the Angular client, Django backend, reservation workflow, and a transaction.atomic seat-validation boundary that expresses lock intent with select_for_update.</p>
           <p><strong>Ownership boundary.</strong> Solo project designed and implemented by Jayrald.</p>
         </div>
       </section>
@@ -115,8 +115,8 @@
 <li>
                 <span class="system-flow-index" aria-hidden="true">03</span>
                 <div>
-                  <h3>Transactional seat claim</h3>
-                  <p>Locks the selected seat row while availability is checked and the reservation is written.</p>
+                  <h3>Transactional seat validation</h3>
+                  <p>Checks availability and writes the reservation inside one backend transaction boundary.</p>
                 </div>
               </li>
 <li>
@@ -140,9 +140,9 @@
             <thead><tr><th>Decision</th><th>Why</th><th>Tradeoff</th></tr></thead>
             <tbody>
 <tr>
-                  <th scope="row">Claim seats inside a database transaction with row-level locking.</th>
-                  <td data-label="Why">Two requests must not be able to confirm the same available seat at the same time.</td>
-                  <td data-label="Tradeoff">The critical section is intentionally serialized, making transaction scope and failure handling important.</td>
+                  <th scope="row">Put seat validation and the reservation write inside transaction.atomic, using select_for_update to express lock intent.</th>
+                  <td data-label="Why">Availability must be checked by the backend at the point where the booking is written, rather than trusted from client state.</td>
+                  <td data-label="Tradeoff">SQLite ignores SELECT FOR UPDATE, so the current demo cannot claim row-level conflict prevention; that guarantee requires a database backend that supports row locks.</td>
                 </tr>
 <tr>
                   <th scope="row">Keep the source repository private.</th>
@@ -226,7 +226,7 @@
           <h2 id="repository-title">Repository disclosure</h2>
         </header>
         <div class="repository-copy">
-          <p>Private solo repository. Source access is not offered publicly; the case study documents the implemented stack and reservation flow.</p>
+          <p>Private solo repository. Source access is not offered publicly. The demo uses SQLite, so its select_for_update call documents the intended locking boundary without providing a row-lock guarantee.</p>
           <p class="repository-private">No public source link is available for this project.</p>
         </div>
       </section>

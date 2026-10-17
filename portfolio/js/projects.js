@@ -85,23 +85,23 @@ export const projects = [
     repositoryStatus: 'private',
     sourceUrl: null,
     challenge:
-      'Protect seat inventory from conflicting bookings while carrying a user through a multi-step reservation flow.',
+      'Keep seat validation authoritative on the backend while carrying a user through a multi-step reservation flow.',
     contribution:
-      'Designed and built the Angular client, Django backend, reservation workflow, and transactionally locked seat selection.',
+      'Designed and built the Angular client, Django backend, reservation workflow, and a transaction.atomic seat-validation boundary that expresses lock intent with select_for_update.',
     architecture:
-      'An Angular booking client communicates with a Django backend that applies transactional locking when seats are reserved.',
+      'An Angular booking client sends reservation requests to a Django API that validates and writes seat state inside transaction.atomic. The SQLite demo backend does not enforce SELECT FOR UPDATE row locks.',
     technologies: ['Angular 21', 'Django REST Framework', 'JWT', 'SQLite'],
     systemFlow: [
       ['Angular client', 'Guides search, seat choice, add-ons, confirmation, and booking review.'],
       ['Django REST API', 'Validates authenticated booking requests and coordinates reservation state.'],
-      ['Transactional seat claim', 'Locks the selected seat row while availability is checked and the reservation is written.'],
+      ['Transactional seat validation', 'Checks availability and writes the reservation inside one backend transaction boundary.'],
       ['SQLite record', 'Persists the confirmed booking for the My Bookings view.'],
     ],
     decisionLedger: [
       {
-        decision: 'Claim seats inside a database transaction with row-level locking.',
-        why: 'Two requests must not be able to confirm the same available seat at the same time.',
-        tradeoff: 'The critical section is intentionally serialized, making transaction scope and failure handling important.',
+        decision: 'Put seat validation and the reservation write inside transaction.atomic, using select_for_update to express lock intent.',
+        why: 'Availability must be checked by the backend at the point where the booking is written, rather than trusted from client state.',
+        tradeoff: 'SQLite ignores SELECT FOR UPDATE, so the current demo cannot claim row-level conflict prevention; that guarantee requires a database backend that supports row locks.',
       },
       {
         decision: 'Keep the source repository private.',
@@ -110,9 +110,9 @@ export const projects = [
       },
     ],
     repositoryDisclosure:
-      'Private solo repository. Source access is not offered publicly; the case study documents the implemented stack and reservation flow.',
+      'Private solo repository. Source access is not offered publicly. The demo uses SQLite, so its select_for_update call documents the intended locking boundary without providing a row-lock guarantee.',
     decisions: [
-      'Used database transactions and row-level locking to prevent overlapping seat reservations.',
+      'Kept seat validation and reservation writes inside a backend transaction boundary; the SQLite demo does not provide row-level SELECT FOR UPDATE locking.',
       'Kept the repository private while documenting the architecture and interaction flow publicly.',
     ],
     workflow: [
