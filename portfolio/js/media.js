@@ -83,6 +83,7 @@ export function initProjectMedia(root = document, options = {}) {
   const documentRoot = options.document ?? root.ownerDocument ?? root;
   const view = documentRoot.defaultView ?? globalThis;
   const Observer = options.IntersectionObserver ?? view.IntersectionObserver;
+  const hasObserver = typeof Observer === 'function';
   const matchMedia = options.matchMedia ?? view.matchMedia?.bind(view);
   const motionQuery = matchMedia?.('(prefers-reduced-motion: reduce)') ?? {
     matches: false,
@@ -148,7 +149,7 @@ export function initProjectMedia(root = document, options = {}) {
     const record = {
       failed: false,
       frame,
-      intersecting: false,
+      intersecting: !hasObserver,
       open: toggle?.getAttribute('aria-expanded') === 'true',
       toggle,
       userStarted: false,
@@ -201,7 +202,7 @@ export function initProjectMedia(root = document, options = {}) {
 
   }
 
-  const observer = Observer
+  const observer = hasObserver
     ? new Observer(
         (entries) => {
           for (const entry of entries) {

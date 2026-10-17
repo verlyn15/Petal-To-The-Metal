@@ -220,6 +220,11 @@ p {
   color: var(--color-paper);
 }
 
+.media-toggle:focus-visible {
+  outline-color: var(--color-paper);
+  outline-offset: 3px;
+}
+
 .nav-toggle:hover,
 .media-toggle:hover {
   background: var(--color-ink);
@@ -234,11 +239,11 @@ p {
   overflow: hidden;
   border: 1px solid rgb(243 239 231 / 0.32);
   background: #171714;
-  transition: max-block-size 240ms ease;
+  transition: max-block-size var(--motion-standard) var(--ease-editorial);
 }
 
 .project-media--open .project-media-stage {
-  max-block-size: none;
+  max-block-size: 80rem;
 }
 
 .project-media video,
@@ -391,15 +396,65 @@ p {
   }
 }
 
+@media (min-width: 48rem) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .primary-nav a {
+    position: relative;
+    text-decoration: none;
+  }
+
+  .primary-nav a::after {
+    position: absolute;
+    right: var(--space-2);
+    bottom: 0.45rem;
+    left: var(--space-2);
+    height: 1px;
+    background: currentColor;
+    content: "";
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--motion-standard) var(--ease-editorial);
+  }
+
+  .primary-nav a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .project-media {
+    transition: transform var(--motion-fast) var(--ease-editorial);
+  }
+
+  .project-media:hover {
+    transform: translateY(-2px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
+    animation: none !important;
     scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
+    transition: none !important;
   }
 
   .project-media-stage {
     transition: none;
+  }
+
+  .motion-ready [data-intro-reveal],
+  .motion-ready [data-reveal-group],
+  .motion-ready [data-reveal-project],
+  .motion-ready [data-reveal-project] .project-number,
+  .motion-ready [data-reveal-project] .project-heading > div,
+  .motion-ready [data-reveal-project] .project-record,
+  .motion-ready [data-reveal-project] .project-media {
+    opacity: 1 !important;
+    clip-path: inset(0) !important;
+    transform: none !important;
+  }
+
+  .motion-ready [data-reveal-project]::before {
+    transform: scaleX(1) !important;
   }
 }

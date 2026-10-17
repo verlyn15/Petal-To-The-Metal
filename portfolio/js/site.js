@@ -15,12 +15,16 @@ export function initNavigation(root = document) {
   toggle.setAttribute('aria-expanded', 'false');
 
   const setOpen = (open, { restoreFocus = false } = {}) => {
-    toggle.setAttribute('aria-expanded', String(open));
-    menu.hidden = !open;
-    if (restoreFocus) toggle.focus?.();
+    const mobile = Boolean(mobileQuery.matches);
+    const expanded = mobile && Boolean(open);
+
+    toggle.setAttribute('aria-expanded', String(expanded));
+    menu.hidden = mobile ? !expanded : false;
+    if (restoreFocus && mobile) toggle.focus?.();
   };
 
   const handleToggle = () => {
+    if (!mobileQuery.matches) return;
     setOpen(toggle.getAttribute('aria-expanded') !== 'true');
   };
   const handleEscape = (event) => {
@@ -28,12 +32,13 @@ export function initNavigation(root = document) {
       setOpen(false, { restoreFocus: true });
     }
   };
-  const handleLink = () => setOpen(false);
+  const handleLink = () => {
+    if (mobileQuery.matches) setOpen(false);
+  };
   const syncViewport = () => {
     const mobile = Boolean(mobileQuery.matches);
     toggle.hidden = !mobile;
-    toggle.setAttribute('aria-expanded', 'false');
-    menu.hidden = mobile;
+    setOpen(false);
   };
 
   toggle.addEventListener('click', handleToggle);
@@ -52,10 +57,97 @@ export function initNavigation(root = document) {
     links.forEach((link) => link.removeEventListener('click', handleLink));
     mobileQuery.removeEventListener?.('change', syncViewport);
     if (!mobileQuery.removeEventListener) mobileQuery.removeListener?.(syncViewport);
+    root.documentElement?.classList?.remove('js');
+    toggle.hidden = true;
+    toggle.setAttribute('aria-expanded', 'false');
+    menu.hidden = false;
+  };
+}
+
+export function initReveals(root = document) {
+  const documentRoot = root.ownerDocument ?? root;
+  const view = documentRoot.defaultView ?? globalThis;
+  const motionQuery = view.matchMedia?.('(prefers-reduced-motion: reduce)');
+  const Observer = view.IntersectionObserver;
+  const html = documentRoot.documentElement;
+  const introItems = [...(root.querySelectorAll?.('[data-intro-reveal]') ?? [])];
+  const scrollItems = [
+    ...(root.querySelectorAll?.('[data-reveal-group]') ?? []),
+    ...(root.querySelectorAll?.('[data-reveal-project]') ?? []),
+  ];
+  let stopped = false;
+  let observerResponded = false;
+  let failSafe;
+  let frame;
+
+  const revealEverything = () => {
+    introItems.forEach((item) => item.classList.add('is-revealed'));
+    scrollItems.forEach((item) => item.classList.add('is-revealed'));
+    html?.classList?.add('motion-intro-play');
+  };
+
+  if (motionQuery?.matches || typeof Observer !== 'function') {
+    revealEverything();
+    return () => {};
+  }
+
+  let observer;
+
+  try {
+    observer = new Observer(
+      (entries) => {
+        observerResponded = true;
+        if (failSafe !== undefined) {
+          view.clearTimeout?.(failSafe);
+          failSafe = undefined;
+        }
+
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add('is-revealed');
+          observer.unobserve(entry.target);
+        }
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.12 },
+    );
+    scrollItems.forEach((item) => observer.observe(item));
+    html?.classList?.add('motion-ready');
+  } catch {
+    revealEverything();
+    html?.classList?.remove('motion-ready');
+    return () => {};
+  }
+
+  const playIntro = () => {
+    html?.classList?.add('motion-intro-play');
+    introItems.forEach((item) => item.classList.add('is-revealed'));
+  };
+  if (view.requestAnimationFrame) {
+    frame = view.requestAnimationFrame(playIntro);
+  } else {
+    playIntro();
+  }
+
+  failSafe = view.setTimeout?.(() => {
+    if (observerResponded) return;
+    revealEverything();
+    html?.classList?.add('motion-failsafe');
+    observer.disconnect();
+  }, 6000);
+
+  return function teardownReveals() {
+    if (stopped) return;
+    stopped = true;
+    observer.disconnect();
+    if (frame !== undefined) view.cancelAnimationFrame?.(frame);
+    if (failSafe !== undefined) view.clearTimeout?.(failSafe);
+    revealEverything();
+    html?.classList?.remove('motion-ready', 'motion-intro-play', 'motion-failsafe');
   };
 }
 
 if (typeof document !== 'undefined') {
   initNavigation(document);
   initProjectMedia(document);
+  initReveals(document);
 }

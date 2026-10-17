@@ -29,6 +29,12 @@
   --space-7: 4.5rem;
   --space-8: 7rem;
 
+  --motion-fast: 140ms;
+  --motion-standard: 360ms;
+  --motion-slow: 680ms;
+  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-rule: cubic-bezier(0.65, 0, 0.35, 1);
+
   --shell: 78rem;
   --measure: 72ch;
   --rule: 1px solid var(--color-rule);

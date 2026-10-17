@@ -64,7 +64,7 @@ function renderProject(project, index) {
     : '<span class="project-source project-source--unavailable">Source repository not public</span>';
 
   return `
-        <article class="project-chapter"${renderAttrs({ id: `project-${project.slug}` })}>
+        <article class="project-chapter" data-reveal-project${renderAttrs({ id: `project-${project.slug}` })}>
           <header class="project-heading">
             <p class="project-number" aria-hidden="true">${chapter}</p>
             <div>
@@ -157,9 +157,9 @@ export function renderHomePage() {
   <main id="main">
     <section class="hero shell" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <p class="eyebrow">Portfolio / ${escapeHtml(site.location)}</p>
-        <h1 id="hero-title"><span>Full-stack and mobile</span> engineer.</h1>
-        <p class="hero-intro">I build web and mobile products from interface to data layer, with practical AI integration where it serves the workflow.</p>
+        <p class="eyebrow" data-intro-reveal="eyebrow">Portfolio / ${escapeHtml(site.location)}</p>
+        <h1 id="hero-title" data-intro-reveal="headline"><span>Full-stack and mobile</span> engineer.</h1>
+        <p class="hero-intro" data-intro-reveal="intro">I build web and mobile products from interface to data layer, with practical AI integration where it serves the workflow.</p>
         <div class="hero-notes" aria-label="Professional focus">
           <p><span>Focus</span> Product engineering across frontend, backend, and mobile.</p>
           <p><span>Availability</span> Open to full-stack and mobile engineering opportunities.</p>
@@ -167,7 +167,7 @@ export function renderHomePage() {
         <a class="button-link" href="#work">Review selected work <span aria-hidden="true">↓</span></a>
       </div>
 
-      <figure class="portrait">
+      <figure class="portrait" data-intro-reveal="portrait">
         <img src="assets/pp/583917390_25203520672616248_2951040891851883210_n.jpg" alt="Portrait of Jayrald Tajanlangit" width="864" height="852">
         <figcaption>
           <span>Jayrald Tajanlangit</span>
@@ -177,7 +177,7 @@ export function renderHomePage() {
     </section>
 
     <section class="work-section shell" id="work" aria-labelledby="work-title">
-      <header class="section-heading section-heading--wide">
+      <header class="section-heading section-heading--wide" data-reveal-group>
         <p class="eyebrow">Selected record / 2026</p>
         <h2 id="work-title">Selected Work</h2>
         <p>Five products spanning full-stack web systems, mobile collaboration, realtime data, and carefully scoped AI features.</p>
@@ -186,7 +186,7 @@ ${projectChapters}
     </section>
 
     <section class="capabilities-section" id="capabilities" aria-labelledby="capabilities-title">
-      <div class="shell capabilities-layout">
+      <div class="shell capabilities-layout" data-reveal-group>
         <header class="section-heading">
           <p class="eyebrow">Working range</p>
           <h2 id="capabilities-title">Capabilities</h2>
@@ -212,7 +212,7 @@ ${projectChapters}
       </div>
     </section>
 
-    <section class="about-section shell" id="about" aria-labelledby="about-title">
+    <section class="about-section shell" id="about" aria-labelledby="about-title" data-reveal-group>
       <header class="section-heading">
         <p class="eyebrow">Profile</p>
         <h2 id="about-title">About</h2>
@@ -224,7 +224,7 @@ ${projectChapters}
     </section>
 
     <section class="contact-section" id="contact" aria-labelledby="contact-title">
-      <div class="shell contact-layout">
+      <div class="shell contact-layout" data-reveal-group>
         <header class="section-heading">
           <p class="eyebrow">Start a conversation</p>
           <h2 id="contact-title">Contact</h2>
