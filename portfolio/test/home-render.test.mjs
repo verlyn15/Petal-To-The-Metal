@@ -129,7 +129,7 @@ test('renders all five project titles and case-study links in approved order', (
   }
 });
 
-test('renders factual project dossier fields without fabricated media', () => {
+test('renders factual project dossiers with planned capture-pending media', () => {
   for (const project of projects) {
     for (const fact of [project.role, project.challenge, project.repositoryStatus]) {
       assert.ok(renderedHtml.includes(fact), `${project.title}: ${fact}`);
@@ -138,10 +138,18 @@ test('renders factual project dossier fields without fabricated media', () => {
     for (const technology of project.technologies) {
       assert.ok(renderedHtml.includes(technology), `${project.title}: ${technology}`);
     }
+
+    for (const mediaPath of [
+      project.media.poster,
+      project.media.video,
+      project.media.stills[0],
+    ]) {
+      assert.ok(renderedHtml.includes(mediaPath), `${project.title}: ${mediaPath}`);
+    }
   }
 
-  assert.doesNotMatch(renderedHtml, /assets\/(?:images\/projects|videos)\//i);
-  assert.match(renderedHtml, /Project media pending documented capture/i);
+  assert.match(renderedHtml, /Project media capture pending/i);
+  assert.doesNotMatch(renderedHtml, /<video[^>]*\sautoplay(?:\s|=|>)/i);
 });
 
 test('renders verified contact actions and meaningful portrait text', () => {

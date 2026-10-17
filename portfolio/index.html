@@ -25,7 +25,8 @@
         <span class="site-monogram" aria-hidden="true">JT</span>
         <span>Jayrald Tajanlangit</span>
       </a>
-      <nav aria-label="Primary" class="primary-nav">
+      <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="primary-navigation" hidden>Menu</button>
+      <nav aria-label="Primary" id="primary-navigation" class="primary-nav">
         <a href="#work">Work</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
@@ -79,12 +80,19 @@
           </header>
 
           <div class="project-layout">
-            <figure class="project-media project-media--pending">
-              <div class="project-media-placeholder" role="img" aria-label="mAIstra project media placeholder">
-                <span>mAIstra</span>
-                <strong>Interface record forthcoming</strong>
+            <figure class="project-media project-media--pending" data-project-media>
+              <div class="project-media-stage" id="media-maistra">
+                <video data-project-video muted loop playsinline preload="metadata" poster="assets/images/projects/maistra/poster.webp" width="1280" height="720" aria-describedby="media-maistra-caption">
+                  <source src="assets/videos/maistra.webm" type="video/webm">
+                </video>
+                <img class="project-media-fallback" data-media-fallback src="assets/images/projects/maistra/still-01.webp" alt="Still preview of mAIstra" width="1280" height="720" loading="lazy" hidden>
+                <div class="project-media-pending" role="img" aria-label="mAIstra project media capture pending">
+                  <span>mAIstra</span>
+                  <strong>Project media capture pending</strong>
+                </div>
               </div>
-              <figcaption>Project media pending documented capture.</figcaption>
+              <button class="media-toggle" type="button" data-media-toggle aria-expanded="false" aria-controls="media-maistra" data-open-label="Open media" data-close-label="Close media" hidden>Open media</button>
+              <figcaption id="media-maistra-caption">Project media preview — documented capture pending.</figcaption>
             </figure>
 
             <div class="project-record">
@@ -133,12 +141,19 @@
           </header>
 
           <div class="project-layout">
-            <figure class="project-media project-media--pending">
-              <div class="project-media-placeholder" role="img" aria-label="SkyFire — Airline Booking System project media placeholder">
-                <span>SkyFire — Airline Booking System</span>
-                <strong>Interface record forthcoming</strong>
+            <figure class="project-media project-media--pending" data-project-media>
+              <div class="project-media-stage" id="media-skyfire">
+                <video data-project-video muted loop playsinline preload="metadata" poster="assets/images/projects/skyfire/poster.webp" width="1280" height="720" aria-describedby="media-skyfire-caption">
+                  <source src="assets/videos/skyfire.webm" type="video/webm">
+                </video>
+                <img class="project-media-fallback" data-media-fallback src="assets/images/projects/skyfire/still-01.webp" alt="Still preview of SkyFire — Airline Booking System" width="1280" height="720" loading="lazy" hidden>
+                <div class="project-media-pending" role="img" aria-label="SkyFire — Airline Booking System project media capture pending">
+                  <span>SkyFire — Airline Booking System</span>
+                  <strong>Project media capture pending</strong>
+                </div>
               </div>
-              <figcaption>Project media pending documented capture.</figcaption>
+              <button class="media-toggle" type="button" data-media-toggle aria-expanded="false" aria-controls="media-skyfire" data-open-label="Open media" data-close-label="Close media" hidden>Open media</button>
+              <figcaption id="media-skyfire-caption">Project media preview — documented capture pending.</figcaption>
             </figure>
 
             <div class="project-record">
@@ -187,12 +202,19 @@
           </header>
 
           <div class="project-layout">
-            <figure class="project-media project-media--pending">
-              <div class="project-media-placeholder" role="img" aria-label="Bulk Buying Companion project media placeholder">
-                <span>Bulk Buying Companion</span>
-                <strong>Interface record forthcoming</strong>
+            <figure class="project-media project-media--pending" data-project-media>
+              <div class="project-media-stage" id="media-bulk-buying-companion">
+                <video data-project-video muted loop playsinline preload="metadata" poster="assets/images/projects/bulk-buying-companion/poster.webp" width="1280" height="720" aria-describedby="media-bulk-buying-companion-caption">
+                  <source src="assets/videos/bulk-buying-companion.webm" type="video/webm">
+                </video>
+                <img class="project-media-fallback" data-media-fallback src="assets/images/projects/bulk-buying-companion/still-01.webp" alt="Still preview of Bulk Buying Companion" width="1280" height="720" loading="lazy" hidden>
+                <div class="project-media-pending" role="img" aria-label="Bulk Buying Companion project media capture pending">
+                  <span>Bulk Buying Companion</span>
+                  <strong>Project media capture pending</strong>
+                </div>
               </div>
-              <figcaption>Project media pending documented capture.</figcaption>
+              <button class="media-toggle" type="button" data-media-toggle aria-expanded="false" aria-controls="media-bulk-buying-companion" data-open-label="Open media" data-close-label="Close media" hidden>Open media</button>
+              <figcaption id="media-bulk-buying-companion-caption">Project media preview — documented capture pending.</figcaption>
             </figure>
 
             <div class="project-record">
@@ -241,12 +263,19 @@
           </header>
 
           <div class="project-layout">
-            <figure class="project-media project-media--pending">
-              <div class="project-media-placeholder" role="img" aria-label="Pulso project media placeholder">
-                <span>Pulso</span>
-                <strong>Interface record forthcoming</strong>
+            <figure class="project-media project-media--pending" data-project-media>
+              <div class="project-media-stage" id="media-pulso">
+                <video data-project-video muted loop playsinline preload="metadata" poster="assets/images/projects/pulso/poster.webp" width="1280" height="720" aria-describedby="media-pulso-caption">
+                  <source src="assets/videos/pulso.webm" type="video/webm">
+                </video>
+                <img class="project-media-fallback" data-media-fallback src="assets/images/projects/pulso/still-01.webp" alt="Still preview of Pulso" width="1280" height="720" loading="lazy" hidden>
+                <div class="project-media-pending" role="img" aria-label="Pulso project media capture pending">
+                  <span>Pulso</span>
+                  <strong>Project media capture pending</strong>
+                </div>
               </div>
-              <figcaption>Project media pending documented capture.</figcaption>
+              <button class="media-toggle" type="button" data-media-toggle aria-expanded="false" aria-controls="media-pulso" data-open-label="Open media" data-close-label="Close media" hidden>Open media</button>
+              <figcaption id="media-pulso-caption">Project media preview — documented capture pending.</figcaption>
             </figure>
 
             <div class="project-record">
@@ -295,12 +324,19 @@
           </header>
 
           <div class="project-layout">
-            <figure class="project-media project-media--pending">
-              <div class="project-media-placeholder" role="img" aria-label="Sige project media placeholder">
-                <span>Sige</span>
-                <strong>Interface record forthcoming</strong>
+            <figure class="project-media project-media--pending" data-project-media>
+              <div class="project-media-stage" id="media-sige">
+                <video data-project-video muted loop playsinline preload="metadata" poster="assets/images/projects/sige/poster.webp" width="1280" height="720" aria-describedby="media-sige-caption">
+                  <source src="assets/videos/sige.webm" type="video/webm">
+                </video>
+                <img class="project-media-fallback" data-media-fallback src="assets/images/projects/sige/still-01.webp" alt="Still preview of Sige" width="1280" height="720" loading="lazy" hidden>
+                <div class="project-media-pending" role="img" aria-label="Sige project media capture pending">
+                  <span>Sige</span>
+                  <strong>Project media capture pending</strong>
+                </div>
               </div>
-              <figcaption>Project media pending documented capture.</figcaption>
+              <button class="media-toggle" type="button" data-media-toggle aria-expanded="false" aria-controls="media-sige" data-open-label="Open media" data-close-label="Close media" hidden>Open media</button>
+              <figcaption id="media-sige-caption">Project media preview — documented capture pending.</figcaption>
             </figure>
 
             <div class="project-record">
@@ -398,5 +434,6 @@
       <a href="#top">Back to top <span aria-hidden="true">↑</span></a>
     </div>
   </footer>
+  <script type="module" src="js/site.js"></script>
 </body>
 </html>

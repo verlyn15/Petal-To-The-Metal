@@ -17,6 +17,45 @@ function projectPlatform(project) {
   return 'Web application';
 }
 
+function renderProjectMedia(project) {
+  const mediaId = `media-${project.slug}`;
+  const captionId = `${mediaId}-caption`;
+
+  return `<figure class="project-media project-media--pending" data-project-media>
+              <div class="project-media-stage"${renderAttrs({ id: mediaId })}>
+                <video data-project-video muted loop playsinline preload="metadata"${renderAttrs({
+                  poster: project.media.poster,
+                  width: 1280,
+                  height: 720,
+                  'aria-describedby': captionId,
+                })}>
+                  <source${renderAttrs({ src: project.media.video, type: 'video/webm' })}>
+                </video>
+                <img class="project-media-fallback" data-media-fallback${renderAttrs({
+                  src: project.media.stills[0],
+                  alt: `Still preview of ${project.title}`,
+                  width: 1280,
+                  height: 720,
+                  loading: 'lazy',
+                  hidden: true,
+                })}>
+                <div class="project-media-pending" role="img"${renderAttrs({
+                  'aria-label': `${project.title} project media capture pending`,
+                })}>
+                  <span>${escapeHtml(project.title)}</span>
+                  <strong>Project media capture pending</strong>
+                </div>
+              </div>
+              <button class="media-toggle" type="button" data-media-toggle aria-expanded="false"${renderAttrs({
+                'aria-controls': mediaId,
+                'data-open-label': 'Open media',
+                'data-close-label': 'Close media',
+                hidden: true,
+              })}>Open media</button>
+              <figcaption${renderAttrs({ id: captionId })}>Project media preview — documented capture pending.</figcaption>
+            </figure>`;
+}
+
 function renderProject(project, index) {
   const chapter = String(index + 1).padStart(2, '0');
   const caseStudyHref = `projects/${project.slug}.html`;
@@ -40,15 +79,7 @@ function renderProject(project, index) {
           </header>
 
           <div class="project-layout">
-            <figure class="project-media project-media--pending">
-              <div class="project-media-placeholder" role="img"${renderAttrs({
-                'aria-label': `${project.title} project media placeholder`,
-              })}>
-                <span>${escapeHtml(project.title)}</span>
-                <strong>Interface record forthcoming</strong>
-              </div>
-              <figcaption>Project media pending documented capture.</figcaption>
-            </figure>
+            ${renderProjectMedia(project)}
 
             <div class="project-record">
               <dl class="dossier" aria-label="Project dossier">
@@ -112,7 +143,8 @@ export function renderHomePage() {
         <span class="site-monogram" aria-hidden="true">JT</span>
         <span>${escapeHtml(site.name)}</span>
       </a>
-      <nav aria-label="Primary" class="primary-nav">
+      <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="primary-navigation" hidden>Menu</button>
+      <nav aria-label="Primary" id="primary-navigation" class="primary-nav">
         <a href="#work">Work</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
@@ -216,6 +248,7 @@ ${projectChapters}
       <a href="#top">Back to top <span aria-hidden="true">↑</span></a>
     </div>
   </footer>
+  <script type="module" src="js/site.js"></script>
 </body>
 </html>
 `;
