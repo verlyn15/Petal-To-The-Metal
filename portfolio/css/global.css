@@ -232,11 +232,13 @@ p {
   }
 
   .primary-nav a {
+    min-inline-size: 44px;
+    min-block-size: 44px;
     padding-inline: 0.55rem;
   }
 
   .primary-nav a:first-child {
-    padding-left: 0;
+    padding-left: 0.55rem;
   }
 
   .site-footer-inner {

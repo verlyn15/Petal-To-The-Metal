@@ -122,6 +122,9 @@
 }
 
 .project-title-link {
+  display: inline-block;
+  min-inline-size: 44px;
+  min-block-size: 44px;
   text-decoration-color: var(--color-vermilion);
 }
 

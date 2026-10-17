@@ -19,6 +19,10 @@ const globalCss = readFileSync(
   fileURLToPath(new URL('../css/global.css', import.meta.url)),
   'utf8',
 );
+const homeCss = readFileSync(
+  fileURLToPath(new URL('../css/home.css', import.meta.url)),
+  'utf8',
+);
 const renderedHtml = renderer?.renderHomePage?.() ?? committedHtml;
 
 function escapeRegExp(value) {
@@ -94,6 +98,17 @@ test('renders semantic navigation and the approved homepage landmarks', () => {
 
 test('resets native figure margins so the 375px layout stays within the viewport', () => {
   assert.match(globalCss, /figure\s*\{[^}]*margin:\s*0\s*;/s);
+});
+
+test('keeps project titles and mobile navigation at least 44 by 44 pixels', () => {
+  assert.match(
+    homeCss,
+    /\.project-title-link\s*\{[^}]*min-inline-size:\s*44px\s*;[^}]*min-block-size:\s*44px\s*;/s,
+  );
+  assert.match(
+    globalCss,
+    /@media \(max-width: 47\.99rem\)[\s\S]*?\.primary-nav a\s*\{[^}]*min-inline-size:\s*44px\s*;[^}]*min-block-size:\s*44px\s*;/,
+  );
 });
 
 test('renders all five project titles and case-study links in approved order', () => {
