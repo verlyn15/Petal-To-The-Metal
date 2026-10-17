@@ -1,0 +1,35 @@
+:root {
+  --color-paper: #f3efe7;
+  --color-paper-deep: #e7e0d3;
+  --color-ink: #171714;
+  --color-muted: #665f52;
+  --color-vermilion: #a63220;
+  --color-vermilion-dark: #7f2518;
+  --color-charcoal: #282824;
+  --color-rule: #b7aea0;
+  --color-focus: #1261a0;
+
+  --font-display: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+
+  --step--1: clamp(0.75rem, 0.71rem + 0.18vw, 0.875rem);
+  --step-0: clamp(1rem, 0.97rem + 0.14vw, 1.0625rem);
+  --step-1: clamp(1.2rem, 1.08rem + 0.56vw, 1.55rem);
+  --step-2: clamp(1.55rem, 1.25rem + 1.3vw, 2.35rem);
+  --step-3: clamp(2.1rem, 1.5rem + 2.6vw, 3.8rem);
+  --step-4: clamp(3.1rem, 2rem + 5vw, 6.75rem);
+
+  --space-1: 0.5rem;
+  --space-2: 0.75rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: 3rem;
+  --space-7: 4.5rem;
+  --space-8: 7rem;
+
+  --shell: 78rem;
+  --measure: 72ch;
+  --rule: 1px solid var(--color-rule);
+}
