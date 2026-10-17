@@ -25,6 +25,8 @@ export const projects = [
   {
     slug: 'maistra',
     title: 'mAIstra',
+    folio: '01 / Learning systems',
+    platform: 'Web application',
     summary:
       'A teaching workflow for reviewing programming submissions, executing code, and recording grades.',
     role: 'Full-stack engineer for submission review and grading',
@@ -40,6 +42,26 @@ export const projects = [
     architecture:
       'A web interface reads and writes submission state through Supabase and sends reviewed code to Judge0 for execution before grading.',
     technologies: ['Web application', 'Supabase', 'Judge0'],
+    systemFlow: [
+      ['Instructor review', 'Opens a learner submission and inspects the submitted code.'],
+      ['Supabase', 'Provides the submission record and keeps review state available to the interface.'],
+      ['Judge0 boundary', 'Receives code through a dedicated integration and returns execution output.'],
+      ['Grade record', 'Returns the instructor to one workflow to record the final grade in Supabase.'],
+    ],
+    decisionLedger: [
+      {
+        decision: 'Isolate remote execution behind a Judge0 integration boundary.',
+        why: 'The review interface needed execution results without taking responsibility for running untrusted code itself.',
+        tradeoff: 'The workflow depends on a remote execution service and must surface its failure states clearly.',
+      },
+      {
+        decision: 'Use Supabase as the shared persistence layer for review and grading state.',
+        why: 'Submission context and the resulting grade needed one source of truth across the review sequence.',
+        tradeoff: 'Interface behavior stays coupled to the agreed data shape and access rules.',
+      },
+    ],
+    repositoryDisclosure:
+      'Public team repository. This case study is limited to Jayrald\'s review, grading, Judge0, and Supabase work; other team features fall outside this ownership record.',
     decisions: [
       'Kept code execution behind a dedicated Judge0 integration boundary.',
       'Stored review and grading state in Supabase so the workflow shares one source of truth.',
@@ -54,6 +76,8 @@ export const projects = [
   {
     slug: 'skyfire',
     title: 'SkyFire — Airline Booking System',
+    folio: '02 / Reservation systems',
+    platform: 'Web application',
     summary:
       'A full-stack airline booking application covering flight discovery, seats, add-ons, and booking management.',
     role: 'Solo full-stack engineer',
@@ -66,7 +90,27 @@ export const projects = [
       'Designed and built the Angular client, Django backend, reservation workflow, and transactionally locked seat selection.',
     architecture:
       'An Angular booking client communicates with a Django backend that applies transactional locking when seats are reserved.',
-    technologies: ['Angular', 'Django', 'Relational database'],
+    technologies: ['Angular 21', 'Django REST Framework', 'JWT', 'SQLite'],
+    systemFlow: [
+      ['Angular client', 'Guides search, seat choice, add-ons, confirmation, and booking review.'],
+      ['Django REST API', 'Validates authenticated booking requests and coordinates reservation state.'],
+      ['Transactional seat claim', 'Locks the selected seat row while availability is checked and the reservation is written.'],
+      ['SQLite record', 'Persists the confirmed booking for the My Bookings view.'],
+    ],
+    decisionLedger: [
+      {
+        decision: 'Claim seats inside a database transaction with row-level locking.',
+        why: 'Two requests must not be able to confirm the same available seat at the same time.',
+        tradeoff: 'The critical section is intentionally serialized, making transaction scope and failure handling important.',
+      },
+      {
+        decision: 'Keep the source repository private.',
+        why: 'The project can still be explained through its architecture and captured booking flow without publishing the codebase.',
+        tradeoff: 'Reviewers cannot inspect source, so this case study discloses that limitation directly.',
+      },
+    ],
+    repositoryDisclosure:
+      'Private solo repository. Source access is not offered publicly; the case study documents the implemented stack and reservation flow.',
     decisions: [
       'Used database transactions and row-level locking to prevent overlapping seat reservations.',
       'Kept the repository private while documenting the architecture and interaction flow publicly.',
@@ -81,6 +125,8 @@ export const projects = [
   {
     slug: 'bulk-buying-companion',
     title: 'Bulk Buying Companion',
+    folio: '03 / Cooperative commerce',
+    platform: 'Mobile application',
     summary:
       'A mobile coordination tool for discovering nearby bulk deals, splitting quantities, and managing pickup and payment updates.',
     role: 'Mobile and backend contributor',
@@ -95,6 +141,26 @@ export const projects = [
     architecture:
       'A Flutter client uses Supabase for authenticated data and realtime updates, with geolocation and on-device scanning features supporting discovery and fulfillment.',
     technologies: ['Flutter', 'Supabase', 'Realtime', 'Geolocation', 'On-device ML'],
+    systemFlow: [
+      ['Nearby hub', 'Uses location context to surface relevant group-purchase activity.'],
+      ['Split Board', 'Lets a participant search offers and reserve a share of a bulk quantity.'],
+      ['Supabase state', 'Keeps participant, payment, notification, and pickup records synchronized.'],
+      ['Fulfillment tools', 'Carries the shared purchase through history, reporting, barcode, and pickup views.'],
+    ],
+    decisionLedger: [
+      {
+        decision: 'Use realtime updates for shared purchase state.',
+        why: 'Reservations, payment updates, and pickup status are useful only when every participant sees current information.',
+        tradeoff: 'The client has to reconcile network interruptions and event ordering instead of assuming a static record.',
+      },
+      {
+        decision: 'Keep barcode recognition on the device.',
+        why: 'The extension can identify an item at the point of use without adding a server round trip.',
+        tradeoff: 'Recognition quality depends on device camera conditions and the supported barcode formats.',
+      },
+    ],
+    repositoryDisclosure:
+      'Team repository, not currently linked publicly. Jayrald\'s scope is listed above; receipt OCR belongs to the wider team rather than to him.',
     decisions: [
       'Used realtime updates for reservation, payment, and pickup state shared across participants.',
       'Kept barcode recognition on-device while treating receipt OCR as a separate team-owned capability.',
@@ -109,6 +175,8 @@ export const projects = [
   {
     slug: 'pulso',
     title: 'Pulso',
+    folio: '04 / Community products',
+    platform: 'Mobile application',
     summary:
       'A Flutter community product centered on social posts, reactions, saved content, profiles, and realtime updates.',
     role: 'Mobile and backend contributor',
@@ -123,6 +191,26 @@ export const projects = [
     architecture:
       'A Flutter client uses Riverpod for application state and Supabase for authentication, persisted social data, and realtime changes.',
     technologies: ['Flutter', 'Riverpod', 'Supabase', 'Realtime'],
+    systemFlow: [
+      ['Flutter interface', 'Presents the feed, reactions, saved posts, and profile surfaces.'],
+      ['Riverpod state', 'Coordinates session and feature state across the supported social workflow.'],
+      ['Supabase services', 'Handles authentication, persisted social data, and realtime changes.'],
+      ['Profile and saved views', 'Return a member to their identity and the posts they chose to keep.'],
+    ],
+    decisionLedger: [
+      {
+        decision: 'Centralize feature state with Riverpod.',
+        why: 'Feed, profile, authentication, and saved-content behavior share session and data dependencies.',
+        tradeoff: 'Providers require deliberate boundaries so feature state does not become globally tangled.',
+      },
+      {
+        decision: 'Show only the supported feed-to-saved-content path.',
+        why: 'That flow reflects implemented work that can be demonstrated honestly.',
+        tradeoff: 'Unreleased direct messages are omitted even though messaging would broaden the product story.',
+      },
+    ],
+    repositoryDisclosure:
+      'Public team repository. Jayrald built the app foundation and major social, profile, saved-content, and realtime features; unreleased direct messages are not presented as shipped.',
     decisions: [
       'Centralized client state in Riverpod to keep feed, profile, and saved-content behavior predictable.',
       'Showcases the supported feed and profile workflow rather than an unreleased direct-message flow.',
@@ -137,6 +225,8 @@ export const projects = [
   {
     slug: 'sige',
     title: 'Sige',
+    folio: '05 / Accountability tools',
+    platform: 'Mobile application',
     summary:
       'A mobile accountability coach that turns conversational guidance into a focused view of next actions.',
     role: 'Solo mobile engineer',
@@ -146,10 +236,30 @@ export const projects = [
     challenge:
       'Connect a coaching conversation to practical follow-through without presenting unfinished product surfaces as shipped features.',
     contribution:
-      'Designed and built the mobile coaching experience, including the chat flow and the supporting task and insight interface prototypes.',
+      'Designed and built the Flutter coaching experience and its service-backed chat integration; designed Tasks and Insights as clearly labeled interface prototypes.',
     architecture:
-      'A mobile client organizes the coaching conversation and accountability views around a service-backed response flow.',
-    technologies: ['Mobile application', 'AI integration', 'Realtime coaching'],
+      'A Flutter client uses Supabase and a FastAPI service to support the coaching conversation, with Groq generating responses and FCM available for notification delivery.',
+    technologies: ['Flutter', 'Supabase', 'FastAPI', 'Groq', 'FCM'],
+    systemFlow: [
+      ['Flutter client', 'Collects a message or quick reply in the coaching conversation.'],
+      ['FastAPI service', 'Receives the request and coordinates the service-backed response flow.'],
+      ['Groq integration', 'Generates the coaching response returned to the active conversation.'],
+      ['Accountability surfaces', 'Tasks and Insights demonstrate the intended follow-through as labeled UI prototypes.'],
+    ],
+    decisionLedger: [
+      {
+        decision: 'Keep the coaching exchange inside the active conversation.',
+        why: 'Quick replies and generated responses need immediate context to feel actionable rather than detached.',
+        tradeoff: 'The usefulness of the experience depends on service availability and careful response handling.',
+      },
+      {
+        decision: 'Label Tasks and Insights as UI prototypes.',
+        why: 'Their interface direction can be shown without implying that unfinished service behavior is live.',
+        tradeoff: 'The demonstration is intentionally narrower than the planned product surface.',
+      },
+    ],
+    repositoryDisclosure:
+      'Public solo repository. The chat integration is implemented; Tasks and Insights are presented as UI prototypes, not completed live features.',
     decisions: [
       'Kept quick replies and coaching responses close to the active conversation.',
       'Labels Tasks and Insights as UI prototypes wherever live service behavior is not demonstrated.',
