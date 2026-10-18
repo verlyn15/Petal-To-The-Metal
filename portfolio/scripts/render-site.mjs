@@ -22,31 +22,30 @@ function projectPlatform(project) {
 function renderProjectMedia(project, pathPrefix = '') {
   const mediaId = `media-${project.slug}`;
   const captionId = `${mediaId}-caption`;
+  const [fallbackStill] = project.media.stills;
 
-  return `<figure class="project-media project-media--pending" data-project-media>
-              <div class="project-media-stage"${renderAttrs({ id: mediaId })}>
+  return `<figure class="project-media project-media--${escapeHtml(project.media.orientation)}" data-project-media>
+              <div class="project-media-stage"${renderAttrs({
+                id: mediaId,
+                style: `--media-aspect: ${project.media.aspect}`,
+              })}>
                 <video data-project-video muted loop playsinline preload="metadata"${renderAttrs({
                   poster: `${pathPrefix}${project.media.poster}`,
-                  width: 1280,
-                  height: 720,
+                  width: project.media.width,
+                  height: project.media.height,
                   'aria-describedby': captionId,
                 })}>
                   <source${renderAttrs({ src: `${pathPrefix}${project.media.video}`, type: 'video/webm' })}>
                 </video>
                 <img class="project-media-fallback" data-media-fallback${renderAttrs({
-                  src: `${pathPrefix}${project.media.stills[0]}`,
-                  alt: `Still preview of ${project.title}`,
-                  width: 1280,
-                  height: 720,
+                  src: `${pathPrefix}${fallbackStill.src}`,
+                  alt: fallbackStill.alt,
+                  width: project.media.width,
+                  height: project.media.height,
                   loading: 'lazy',
                   hidden: true,
                 })}>
-                <div class="project-media-pending" role="img"${renderAttrs({
-                  'aria-label': `${project.title} project media capture pending`,
-                })}>
-                  <span>${escapeHtml(project.title)}</span>
-                  <strong>Project media capture pending</strong>
-                </div>
+                <span class="project-media-label">${escapeHtml(project.media.label)}</span>
               </div>
               <button class="media-toggle" type="button" data-media-toggle aria-expanded="false"${renderAttrs({
                 'aria-controls': mediaId,
@@ -54,7 +53,7 @@ function renderProjectMedia(project, pathPrefix = '') {
                 'data-close-label': 'Close media',
                 hidden: true,
               })}>Open media</button>
-              <figcaption${renderAttrs({ id: captionId })}>Project media preview — documented capture pending.</figcaption>
+              <figcaption${renderAttrs({ id: captionId })}>${escapeHtml(project.media.caption)}</figcaption>
             </figure>`;
 }
 
@@ -283,21 +282,29 @@ function renderDecisionLedger(project) {
 }
 
 function renderWorkflow(project) {
-  return project.workflow
+  return project.media.stills
     .map(
-      (step, index) => `<li class="workflow-entry">
+      (still, index) => {
+        const step = project.workflow[index] ?? still.caption;
+        return `<li class="workflow-entry">
                 <div class="workflow-copy">
-                  <p class="workflow-index">${String(index + 1).padStart(2, '0')} / ${String(project.workflow.length).padStart(2, '0')}</p>
+                  <p class="workflow-index">${String(index + 1).padStart(2, '0')} / ${String(project.media.stills.length).padStart(2, '0')}</p>
                   <h3>${escapeHtml(step)}</h3>
                 </div>
-                <figure class="workflow-media" data-capture-state="pending">
-                  <div class="workflow-media-stage" role="img" aria-label="${escapeHtml(project.title)} workflow capture ${index + 1} pending">
-                    <span>${escapeHtml(project.title)}</span>
-                    <strong>Interface capture pending</strong>
+                <figure class="workflow-media" data-capture-state="available">
+                  <div class="workflow-media-stage">
+                    <img${renderAttrs({
+                      src: `../${still.src}`,
+                      alt: still.alt,
+                      width: project.media.width,
+                      height: project.media.height,
+                      loading: 'lazy',
+                    })}>
                   </div>
-                  <figcaption>Planned capture ${String(index + 1).padStart(2, '0')} — ${escapeHtml(step)}</figcaption>
+                  <figcaption>${escapeHtml(still.caption)}</figcaption>
                 </figure>
-              </li>`,
+              </li>`;
+      },
     )
     .join('\n');
 }
@@ -437,7 +444,7 @@ ${renderDecisionLedger(project)}
           <p class="case-section-number">05</p>
           <h2 id="workflow-title">Workflow record</h2>
         </header>
-        <p class="capture-disclosure">The interface record is reserved for captures from the working product. Placeholders remain explicit until those captures are added.</p>
+        <p class="capture-disclosure">${escapeHtml(project.media.disclosure)}</p>
         <ol class="workflow-list">
 ${renderWorkflow(project)}
         </ol>

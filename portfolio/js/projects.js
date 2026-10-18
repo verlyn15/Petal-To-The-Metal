@@ -10,14 +10,30 @@ export const site = {
   location: 'Philippines',
 };
 
-function mediaFor(slug) {
+function mediaFor(slug, {
+  width,
+  height,
+  caption,
+  disclosure,
+  stills,
+  label = 'Real app capture',
+}) {
   return {
+    available: true,
+    status: 'available',
     poster: `assets/images/projects/${slug}/poster.webp`,
     video: `assets/videos/${slug}.webm`,
-    stills: [
-      `assets/images/projects/${slug}/still-01.webp`,
-      `assets/images/projects/${slug}/still-02.webp`,
-    ],
+    width,
+    height,
+    aspect: `${width} / ${height}`,
+    orientation: height > width ? 'portrait' : 'landscape',
+    caption,
+    disclosure,
+    label,
+    stills: stills.map((still, index) => ({
+      ...still,
+      src: `assets/images/projects/${slug}/still-${String(index + 1).padStart(2, '0')}.webp`,
+    })),
   };
 }
 
@@ -71,7 +87,30 @@ export const projects = [
       'Review the submitted code.',
       'Run the code and record the grade.',
     ],
-    media: mediaFor('maistra'),
+    media: mediaFor('maistra', {
+      width: 1280,
+      height: 720,
+      caption: 'Submissions to code review, test execution, and a recorded 100% grade.',
+      disclosure:
+        'Real interface capture of the working instructor review flow, shown with locally isolated submission and grading data for the walkthrough.',
+      stills: [
+        {
+          alt: 'mAIstra teacher workspace showing one Programming Fundamentals submission ready to grade.',
+          caption:
+            'Open a submission — the teacher workspace groups review-ready work by course and keeps status visible before the review begins.',
+        },
+        {
+          alt: 'mAIstra review dialog comparing a photographed code submission with verified C code.',
+          caption:
+            'Review the code — the staged review interface keeps the submitted image beside editable, verified code before execution.',
+        },
+        {
+          alt: 'mAIstra run and grade step showing two accepted test cases and a score of 100 percent.',
+          caption:
+            'Run and grade — Judge0 results return to the review surface, where two accepted test cases produce a recorded 100% score.',
+        },
+      ],
+    }),
   },
   {
     slug: 'skyfire',
@@ -120,7 +159,30 @@ export const projects = [
       'Choose a seat and optional add-ons.',
       'Confirm the reservation and review it in My Bookings.',
     ],
-    media: mediaFor('skyfire'),
+    media: mediaFor('skyfire', {
+      width: 1440,
+      height: 900,
+      caption: 'Flight selection to seat and add-ons, then confirmation in My Bookings.',
+      disclosure:
+        'Real capture of the working local booking flow, using seeded flights and a locally isolated account so no production customer data appears.',
+      stills: [
+        {
+          alt: 'SkyFire flight search page with discounted Manila to Tokyo and Cebu to Seoul results.',
+          caption:
+            'Choose a flight — search controls, availability, cabin, and pricing stay together so the reservation starts with an explicit fare.',
+        },
+        {
+          alt: 'SkyFire booking dialog with seat 1A selected, baggage options, meal preference, and total price.',
+          caption:
+            'Configure the trip — the booking step carries the selected seat, baggage, meal, and calculated total in one reviewable state.',
+        },
+        {
+          alt: 'SkyFire My Bookings page showing the confirmed Manila to Tokyo reservation and booking reference.',
+          caption:
+            'Confirm the reservation — the completed write returns a booking reference, seat, add-ons, price, and status in My Bookings.',
+        },
+      ],
+    }),
   },
   {
     slug: 'bulk-buying-companion',
@@ -170,7 +232,30 @@ export const projects = [
       'Open a nearby bulk deal and reserve a share.',
       'Track payment and pickup updates through notifications.',
     ],
-    media: mediaFor('bulk-buying-companion'),
+    media: mediaFor('bulk-buying-companion', {
+      width: 390,
+      height: 844,
+      caption: 'Split Board to a rice deal, then reserving a share in the group purchase.',
+      disclosure:
+        'Genuine Flutter interface captured with the repository\'s locally isolated mock data source. It demonstrates the implemented interaction states, not live participant data.',
+      stills: [
+        {
+          alt: 'Bulk Buying Companion Split Board listing bottled water, rice, and detergent deals at Colon Street Hub.',
+          caption:
+            'Browse the Split Board — searchable deal cards expose share price, quantity, slot availability, and closing date from one mobile surface.',
+        },
+        {
+          alt: 'Bulk Buying Companion rice deal detail showing a 180 peso share, three open slots, and a Reserve a slot button.',
+          caption:
+            'Inspect the rice deal — the detail view makes the participant\'s quantity, cost, capacity, pickup point, and payment state explicit before reservation.',
+        },
+        {
+          alt: 'Bulk Buying Companion rice deal after reservation, with two slots open and a Cancel my slot action.',
+          caption:
+            'Reserve a share — locally isolated capture data updates the remaining capacity and exposes the participant\'s payment and cancellation state.',
+        },
+      ],
+    }),
   },
   {
     slug: 'pulso',
@@ -220,7 +305,30 @@ export const projects = [
       'React to or save a post.',
       'Review saved content from the profile.',
     ],
-    media: mediaFor('pulso'),
+    media: mediaFor('pulso', {
+      width: 390,
+      height: 844,
+      caption: 'Released Feed to like and bookmark, then the Saved view in Profile.',
+      disclosure:
+        'Genuine released Flutter UI captured with locally isolated in-memory sample data. The sequence demonstrates shipped feed, reaction, bookmark, and profile behavior without using live community content.',
+      stills: [
+        {
+          alt: 'Pulso For You feed showing posts from campus.dev and design.circle before interaction.',
+          caption:
+            'Browse the Feed — the released mobile surface presents reactions and save actions in a compact, familiar reading flow.',
+        },
+        {
+          alt: 'Pulso feed after the campus.dev post has been liked and bookmarked.',
+          caption:
+            'Like and save — isolated in-memory capture state confirms both interactions immediately while preserving the user\'s place in the feed.',
+        },
+        {
+          alt: 'Pulso profile with the Saved tab selected and a saved-post tile visible.',
+          caption:
+            'Review Saved content — profile navigation returns the member to bookmarked posts through the released saved-content path.',
+        },
+      ],
+    }),
   },
   {
     slug: 'sige',
@@ -265,11 +373,35 @@ export const projects = [
       'Labels Tasks and Insights as UI prototypes wherever live service behavior is not demonstrated.',
     ],
     workflow: [
-      'Choose a quick reply in the coaching chat.',
-      'Review the coach response.',
-      'Open the Tasks UI prototype for the next action.',
+      'Review the planned next actions in the Tasks UI prototype.',
+      'Open a prototype task detail.',
+      'Mark the prototype task done and review its completion state.',
     ],
-    media: mediaFor('sige'),
+    media: mediaFor('sige', {
+      width: 390,
+      height: 844,
+      label: 'Tasks UI prototype',
+      caption: 'Tasks UI prototype — open a task, mark it done, and review the completion state.',
+      disclosure:
+        'Tasks UI prototype captured from the Flutter project. This locally isolated sequence demonstrates the intended task list, detail, and completion states; it is not connected to a live task backend.',
+      stills: [
+        {
+          alt: 'Sige Tasks UI prototype showing in-progress and planned student tasks.',
+          caption:
+            'Tasks UI prototype — the list organizes next actions by status and exposes the next concrete step for each item.',
+        },
+        {
+          alt: 'Sige Tasks UI prototype detail page for an OS midterm reviewer with a Mark done action.',
+          caption:
+            'Open the prototype detail — rationale, schedule, and completion action are composed as one focused accountability surface.',
+        },
+        {
+          alt: 'Sige Tasks UI prototype completion screen celebrating the finished OS midterm reviewer task.',
+          caption:
+            'Mark the prototype task done — the completion state acknowledges progress, records focused time, and offers a clear next step.',
+        },
+      ],
+    }),
   },
 ];
 
