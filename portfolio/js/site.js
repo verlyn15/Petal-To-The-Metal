@@ -147,8 +147,58 @@ export function initReveals(root = document) {
   };
 }
 
+export function initFocusTyping(root = document, options = {}) {
+  const target = root.querySelector?.('[data-typing-focus]');
+  if (!target) return () => {};
+
+  const documentRoot = root.ownerDocument ?? root;
+  const view = documentRoot.defaultView ?? globalThis;
+  const motionQuery = view.matchMedia?.('(prefers-reduced-motion: reduce)');
+  const text = target.dataset.typingText ?? target.textContent ?? '';
+  const characters = Array.from(text);
+  const startDelay = options.startDelay ?? 900;
+  const characterDelay = options.characterDelay ?? 34;
+  let timer;
+  let index = 0;
+  let stopped = false;
+
+  if (!text || motionQuery?.matches) return () => {};
+
+  const finish = () => {
+    target.textContent = text;
+    target.classList.remove('is-typing');
+    target.classList.add('is-typed');
+  };
+
+  const typeNext = () => {
+    if (stopped) return;
+    index += 1;
+    target.textContent = characters.slice(0, index).join('');
+
+    if (index >= characters.length) {
+      finish();
+      return;
+    }
+
+    timer = view.setTimeout?.(typeNext, characterDelay);
+  };
+
+  target.textContent = '';
+  target.classList.add('is-typing');
+  timer = view.setTimeout?.(typeNext, startDelay);
+
+  return function teardownFocusTyping() {
+    if (stopped) return;
+    stopped = true;
+    if (timer !== undefined) view.clearTimeout?.(timer);
+    target.textContent = text;
+    target.classList.remove('is-typing', 'is-typed');
+  };
+}
+
 if (typeof document !== 'undefined') {
   initNavigation(document);
   initProjectMedia(document);
   initReveals(document);
+  initFocusTyping(document);
 }

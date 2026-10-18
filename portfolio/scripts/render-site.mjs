@@ -116,6 +116,7 @@ function renderProject(project, index) {
 
 export function renderHomePage() {
   const projectChapters = projects.map(renderProject).join('\n');
+  const focusText = 'Product engineering across web, mobile, and applied AI.';
 
   return `<!doctype html>
 <html lang="en">
@@ -162,8 +163,15 @@ export function renderHomePage() {
         <h1 id="hero-title" data-intro-reveal="headline"><span>Full-stack and mobile</span> engineer.</h1>
         <p class="hero-intro" data-intro-reveal="intro">I build web and mobile products from interface to data layer, with practical AI integration where it serves the workflow.</p>
         <div class="hero-notes" aria-label="Professional focus">
-          <p><span>Focus</span> Product engineering across frontend, backend, and mobile.</p>
-          <p><span>Availability</span> Open to full-stack and mobile engineering opportunities.</p>
+          <p>
+            <span class="visually-hidden">Focus: ${escapeHtml(focusText)}</span>
+            <span class="hero-note-label" aria-hidden="true">Focus</span>
+            <span class="typing-focus" aria-hidden="true">
+              <span class="typing-focus__measure">${escapeHtml(focusText)}</span>
+              <span class="typing-focus__visible" data-typing-focus${renderAttrs({ 'data-typing-text': focusText })}>${escapeHtml(focusText)}</span>
+            </span>
+          </p>
+          <p><span class="hero-note-label">Availability</span> Open to full-stack and mobile engineering opportunities.</p>
         </div>
         <a class="button-link" href="#work">Review selected work <span aria-hidden="true">↓</span></a>
       </div>
